@@ -7,10 +7,10 @@ import com.vivareal.domains.Property;
  */
 public class PropertyAlreadyExistsException extends ResourceAlreadyExistsException {
 
-    private static final String MESSAGE = "Property %s already exists.";
+    private static final String MESSAGE = "There is already a Property in %s.";
 
     public PropertyAlreadyExistsException(final Property property) {
-        super(String.format(MESSAGE, property.toString()));
+        super(String.format(MESSAGE, property.getPoint().toString()));
     }
 
 }

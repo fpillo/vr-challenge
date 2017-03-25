@@ -1,8 +1,8 @@
 package com.vivareal.usecases;
 
 import com.vivareal.domains.*;
+import com.vivareal.exceptions.BusinessException;
 import com.vivareal.exceptions.PropertyAlreadyExistsException;
-import com.vivareal.gateways.PropertyGateway;
 import com.vivareal.gateways.inmemory.PropertyGatewayImpl;
 import com.vivareal.gateways.inmemory.ProvinceGatewayImpl;
 import org.junit.Assert;
@@ -17,8 +17,6 @@ import java.util.Arrays;
  */
 public class CreatePropertyTest {
 
-    private PropertyGateway propertyGateway;
-
     private CreateProperty createProperty;
 
     @Before
@@ -27,8 +25,7 @@ public class CreatePropertyTest {
         final Province ruja = createProvince("ruja", new Point(400, 1000), new Point(1100, 500));
         final Spotippos spotippos = new Spotippos(Arrays.asList(gode, ruja));
 
-        propertyGateway = new PropertyGatewayImpl(spotippos);
-        createProperty = new CreateProperty(propertyGateway, new ProvinceGatewayImpl(spotippos),  Validation.buildDefaultValidatorFactory().getValidator());
+        createProperty = new CreateProperty(new PropertyGatewayImpl(spotippos), new ProvinceGatewayImpl(spotippos), new ValidateDomain(Validation.buildDefaultValidatorFactory().getValidator()));
     }
 
     @Test
@@ -36,6 +33,12 @@ public class CreatePropertyTest {
         final Property property = new Property();
         property.setX(399);
         property.setY(900);
+        property.setTitle("Imóvel código 1, com 5 quartos e 4 banheiros");
+        property.setPrice(1250000);
+        property.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+        property.setBeds(4);
+        property.setBaths(3);
+        property.setSquareMeters(210);
 
         final Property result = createProperty.create(property);
 
@@ -43,16 +46,45 @@ public class CreatePropertyTest {
     }
 
     @Test(expected = PropertyAlreadyExistsException.class)
-    public void test_create_propertieAlreadyExists_shouldThrow_Exception() {
+    public void test_create_propertyAlreadyExists_shouldThrow_Exception() {
         final Property oldProperty = new Property();
         oldProperty.setX(399);
         oldProperty.setY(900);
+        oldProperty.setTitle("Imóvel código 1, com 5 quartos e 4 banheiros");
+        oldProperty.setPrice(1250000);
+        oldProperty.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+        oldProperty.setBeds(4);
+        oldProperty.setBaths(3);
+        oldProperty.setSquareMeters(210);
+
         createProperty.create(oldProperty);
 
         final Property newProperty = new Property();
         newProperty.setX(399);
         newProperty.setY(900);
+        oldProperty.setTitle("Novo Imóvel");
+        oldProperty.setPrice(2550000);
+        oldProperty.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+        oldProperty.setBeds(2);
+        oldProperty.setBaths(2);
+        oldProperty.setSquareMeters(110);
+
         createProperty.create(newProperty);
+    }
+
+    @Test(expected = BusinessException.class)
+    public void test_create_invalid_constraints_shouldThrow_Exception() {
+        final Property oldProperty = new Property();
+        oldProperty.setX(600);
+        oldProperty.setY(450);
+        oldProperty.setTitle("");
+        oldProperty.setPrice(null);
+        oldProperty.setDescription(null);
+        oldProperty.setBeds(4);
+        oldProperty.setBaths(3);
+        oldProperty.setSquareMeters(210);
+
+        createProperty.create(oldProperty);
     }
 
     private Province createProvince(final String name, final Point upperLeft, final Point bottomRight) {

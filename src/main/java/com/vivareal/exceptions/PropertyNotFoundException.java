@@ -8,7 +8,7 @@ public class PropertyNotFoundException extends ResourceNotFoundException {
     private static final String MESSAGE = "Property %s not found.";
 
     public PropertyNotFoundException(final String id) {
-        super(String.format("Property {0} not found.", id));
+        super(String.format(MESSAGE, id));
     }
 
 }

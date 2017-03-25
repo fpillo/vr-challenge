@@ -8,7 +8,6 @@ import com.vivareal.gateways.ProvinceGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Validator;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,20 +22,20 @@ public class CreateProperty {
 
     private final ProvinceGateway provinceGateway;
 
-    private final Validator validator;
+    private final ValidateDomain validateDomain;
 
     @Autowired
-    public CreateProperty(final PropertyGateway propertyGateway, final ProvinceGateway provinceGateway, final Validator validator) {
+    public CreateProperty(final PropertyGateway propertyGateway, final ProvinceGateway provinceGateway, final ValidateDomain validateDomain) {
         this.propertyGateway = propertyGateway;
         this.provinceGateway = provinceGateway;
-        this.validator = validator;
+        this.validateDomain = validateDomain;
     }
 
     public Property create(final Property property) {
         insertId(property);
         checkPropertiePointExists(property);
         insertProvince(property);
-        //Set<ConstraintViolation<Property>> violations = validator.validate(property);
+        validateDomain.validate(property);
         propertyGateway.save(property);
 
         return property;
@@ -54,7 +53,9 @@ public class CreateProperty {
     }
 
     private void checkPropertiePointExists(final Property property) {
-        propertyGateway.findByPoint(property.getPoint()).ifPresent(p -> {throw new PropertyAlreadyExistsException(p);});
+        if (propertyGateway.findByPoint(property.getPoint()).isPresent()) {
+            throw new PropertyAlreadyExistsException(property);
+        }
     }
 
 }

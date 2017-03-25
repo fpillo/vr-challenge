@@ -1,5 +1,6 @@
 package com.vivareal.http;
 
+import com.vivareal.exceptions.BusinessException;
 import com.vivareal.exceptions.ResourceAlreadyExistsException;
 import com.vivareal.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -15,15 +16,17 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleResourceNotFoundException(final ResourceNotFoundException ex) {
-        return ex.getMessage();
+    public void handleResourceNotFoundException(final ResourceNotFoundException ex) {
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleResourceAlreadyExistsException(final ResourceAlreadyExistsException ex) {
-        return ex.getMessage();
+    public void handleResourceAlreadyExistsException(final ResourceAlreadyExistsException ex) {
     }
 
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleBusinessException(final BusinessException ex) {
+    }
 
 }
