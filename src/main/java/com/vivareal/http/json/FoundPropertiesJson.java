@@ -1,6 +1,6 @@
 package com.vivareal.http.json;
 
-import com.vivareal.domains.Propertie;
+import com.vivareal.domains.Property;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -13,9 +13,9 @@ public class FoundPropertiesJson {
 
     private Integer foundProperties;
 
-    private Collection<Propertie> properties;
+    private Collection<Property> properties;
 
-    public FoundPropertiesJson(final Collection<Propertie> properties) {
+    public FoundPropertiesJson(final Collection<Property> properties) {
         this.foundProperties = properties.size();
         this.properties = properties;
     }

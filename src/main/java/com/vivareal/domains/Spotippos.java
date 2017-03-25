@@ -11,17 +11,17 @@ import java.util.stream.Collectors;
  */
 public class Spotippos {
 
-    private final Propertie[][] world = new Propertie[1001][1401];
+    private final Property[][] world = new Property[1001][1401];
 
-    private final Map<String, Propertie> propertieMap = new HashMap<>();
+    private final Map<String, Property> propertyMap = new HashMap<>();
 
     private final Map<String, Province> provinceMap = new HashMap<>();
 
-    public Propertie insertPropertie(final Propertie propertie) {
-        world[propertie.getY()][propertie.getX()] = propertie;
-        propertieMap.put(propertie.getId(), propertie);
+    public Property insertProperty(final Property property) {
+        world[property.getY()][property.getX()] = property;
+        propertyMap.put(property.getId(), property);
 
-        return propertie;
+        return property;
     }
 
     public Province insertProvince(final Province province) {
@@ -30,16 +30,16 @@ public class Spotippos {
         return province;
     }
 
-    public Propertie findPropertieByPoint(final Point point) {
+    public Property findPropertiesByPoint(final Point point) {
         return world[point.getY()][point.getX()];
     }
 
-    public Propertie findPropertieById(final String id) {
-        return propertieMap.get(id);
+    public Property findPropertiesById(final String id) {
+        return propertyMap.get(id);
     }
 
-    public Collection<Propertie> findPropertieByBoundaries(final Boundaries boundaries) {
-        final Collection<Propertie> properties = new ArrayList<>();
+    public Collection<Property> findPropertiesByBoundaries(final Boundaries boundaries) {
+        final Collection<Property> properties = new ArrayList<>();
         for (int line = boundaries.getUpperLeft().getX(); line <= boundaries.getBottomRight().getX(); line++) {
             for (int column = boundaries.getBottomRight().getY(); column <= boundaries.getUpperLeft().getY(); column++) {
                 if (world[column][line] != null) {
@@ -65,7 +65,7 @@ public class Spotippos {
                 world[column][line] = null;
             }
         }
-        propertieMap.clear();
+        propertyMap.clear();
     }
 
     public void removeAllProvinces() {

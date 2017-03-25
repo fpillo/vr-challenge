@@ -15,12 +15,14 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleResourceNotFoundException(final ResourceNotFoundException ex) {
+    public String handleResourceNotFoundException(final ResourceNotFoundException ex) {
+        return ex.getMessage();
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public void handleResourceAlreadyExistsException(final ResourceAlreadyExistsException ex) {
+    public String handleResourceAlreadyExistsException(final ResourceAlreadyExistsException ex) {
+        return ex.getMessage();
     }
 
 

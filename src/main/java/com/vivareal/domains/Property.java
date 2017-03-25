@@ -21,44 +21,44 @@ import java.util.HashSet;
 @Getter
 @EqualsAndHashCode(of = "id")
 @ToString(of = {"id", "x", "y"})
-public class Propertie {
+public class Property {
 
-    @NotBlank(message = "propertie.id.notBlank")
+    @NotBlank(message = "property.id.notBlank")
     private String id;
 
-    @NotBlank(message = "propertie.title.notBlank")
+    @NotBlank(message = "property.title.notBlank")
     private String title;
 
-    @NotNull(message = "propertie.price.notNull")
-    @Min(value = 0, message ="propertie.price.min")
+    @NotNull(message = "property.price.notNull")
+    @Min(value = 0, message ="property.price.min")
     private Integer price;
 
-    @NotBlank(message = "propertie.description.notBlank")
+    @NotBlank(message = "property.description.notBlank")
     private String description;
 
-    @NotNull(message = "propertie.x.notNull")
-    @Min(value = 0, message ="propertie.x.min")
-    @Max(value = 1400, message ="propertie.x.max")
+    @NotNull(message = "property.x.notNull")
+    @Min(value = 0, message ="property.x.min")
+    @Max(value = 1400, message ="property.x.max")
     private Integer x;
 
-    @NotNull(message = "propertie.y.notNull")
-    @Min(value = 0, message ="propertie.y.min")
-    @Max(value = 1000, message ="propertie.y.max")
+    @NotNull(message = "property.y.notNull")
+    @Min(value = 0, message ="property.y.min")
+    @Max(value = 1000, message ="property.y.max")
     private Integer y;
 
-    @NotNull(message = "propertie.beds.notNull")
-    @Min(value = 0, message ="propertie.beds.min")
+    @NotNull(message = "property.beds.notNull")
+    @Min(value = 0, message ="property.beds.min")
     private Integer beds;
 
-    @NotNull(message = "propertie.baths.notNull")
-    @Min(value = 0, message ="propertie.baths.min")
+    @NotNull(message = "property.baths.notNull")
+    @Min(value = 0, message ="property.baths.min")
     private Integer baths;
 
-    @NotEmpty(message = "propertie.provinces.notEmpty")
+    @NotEmpty(message = "property.provinces.notEmpty")
     private Collection<String> provinces = new HashSet<>();
 
-    @NotNull(message = "propertie.squareMeters.notNull")
-    @Min(value = 1, message ="propertie.squareMeters.min")
+    @NotNull(message = "property.squareMeters.notNull")
+    @Min(value = 1, message ="property.squareMeters.min")
     private Integer squareMeters;
 
     @JsonIgnore

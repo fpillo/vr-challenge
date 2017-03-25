@@ -19,7 +19,7 @@ public class Boundaries {
 
     private Point bottomRight;
 
-    public Collection<Propertie> findContainedProperties(final Collection<Propertie> properties) {
+    public Collection<Property> findContainedProperties(final Collection<Property> properties) {
         return properties.stream().filter(propertie ->
             containX(propertie.getPoint()) && containY(propertie.getPoint())
         ).collect(Collectors.toList());
