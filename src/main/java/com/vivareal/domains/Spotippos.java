@@ -4,34 +4,33 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by fpillo on 3/24/2017.
  */
 public class Spotippos {
 
-    private final Property[][] world = new Property[1001][1401];
+    private final Location[][] world = new Location[1001][1401];
 
     private final Map<String, Property> propertyMap = new HashMap<>();
 
-    private final Map<String, Province> provinceMap = new HashMap<>();
-
     public Spotippos(final Collection<Province> provinces) {
+        initWorld();
         provinces.forEach(province -> {
-            provinceMap.put(province.getName(), province);
+            setProvinces(province);
         });
     }
 
     public Property insertProperty(final Property property) {
-        world[property.getY()][property.getX()] = property;
+        final Location location = world[property.getY()][property.getX()];
+        location.setProperty(property);
         propertyMap.put(property.getId(), property);
 
         return property;
     }
 
     public Property findPropertiesByPoint(final Point point) {
-        return world[point.getY()][point.getX()];
+        return world[point.getY()][point.getX()].getProperty();
     }
 
     public Property findPropertiesById(final String id) {
@@ -42,8 +41,8 @@ public class Spotippos {
         final Collection<Property> properties = new ArrayList<>();
         for (int line = boundaries.getUpperLeft().getX(); line <= boundaries.getBottomRight().getX(); line++) {
             for (int column = boundaries.getBottomRight().getY(); column <= boundaries.getUpperLeft().getY(); column++) {
-                if (world[column][line] != null) {
-                    properties.add(world[column][line]);
+                if (world[column][line].getProperty() != null) {
+                    properties.add(world[column][line].getProperty());
                 }
             }
         }
@@ -52,20 +51,25 @@ public class Spotippos {
     }
 
     public Collection<Province> findProvinceByPoint(final Point point) {
-        return provinceMap.values().stream().filter(province -> province.containPoint(point)).collect(Collectors.toList());
+        return world[point.getY()][point.getX()].getProvinces();
     }
 
-    public void removeAllProperties() {
+    private void initWorld() {
         for (int line = 0; line < 1401; line++) {
-            for (int column = 0; column < 1000; column++) {
-                world[column][line] = null;
+            for (int column = 0; column < 1001; column++) {
+                final Location location = new Location(new Point(line, column));
+                world[column][line] = location;
             }
         }
-        propertyMap.clear();
     }
 
-    public void removeAllProvinces() {
-        provinceMap.clear();
+    private void setProvinces(final Province province) {
+        for (int line = province.getBoundaries().getUpperLeft().getX(); line <= province.getBoundaries().getBottomRight().getX(); line++) {
+            for (int column = province.getBoundaries().getBottomRight().getY(); column <= province.getBoundaries().getUpperLeft().getY(); column++) {
+                final Location location = world[column][line];
+                location.addProvince(province);
+            }
+        }
     }
 
 }
