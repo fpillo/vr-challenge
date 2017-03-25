@@ -22,7 +22,7 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean("resourceLoader")
+	@Bean
 	public ResourceLoader resourceLoader() {
 		return new ResourceLoader();
 	}
