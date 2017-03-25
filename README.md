@@ -16,13 +16,13 @@ Como rodar a aplicação pelo Maven (a aplicação irá rodar na porta 8080 por 
 End-points
 
 - Post: /properties
-Response 201: em caso de sucesso.
-Response 400: em caso de dados inválidos no body.
-Response 409: em caso de já existir uma "Property" na cordenada solicitada.
+  -Response 201: em caso de sucesso.
+  -Response 400: em caso de dados inválidos no body.
+  -Response 409: em caso de já existir uma "Property" na cordenada solicitada.
 
 - GET: /properties/{id}
-Response 200: em caso de resource encontrado.
-Response 404: em caso de resource não encontrado.
+  -Response 200: em caso de resource encontrado.
+  -Response 404: em caso de resource não encontrado.
 
 - GET /properties?ax={integer}&ay={integer}&bx={integer}&by={integer}
-Response 200: encontrando ou não "Properties" nas cordenadas (caso não encontre a coleção retorna vazia).
+  -Response 200: encontrando ou não "Properties" nas cordenadas (caso não encontre a coleção retorna vazia).
