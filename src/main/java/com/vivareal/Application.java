@@ -7,10 +7,11 @@ import com.vivareal.domains.Spotippos;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.FileCopyUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -55,8 +56,8 @@ public class Application {
 
 	class ResourceLoader {
 		public String load(final String fileName) throws IOException {
-			final File file = new File(this.getClass().getClassLoader().getResource(fileName).getFile());
-			return new String(Files.readAllBytes(file.toPath()));
+			final ClassPathResource classPathResource = new ClassPathResource(fileName);
+			return new String(FileCopyUtils.copyToByteArray(classPathResource.getInputStream()), StandardCharsets.UTF_8);
 		}
 	}
 
