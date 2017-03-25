@@ -3,7 +3,6 @@ package com.vivareal.usecases;
 import com.vivareal.domains.*;
 import com.vivareal.exceptions.PropertyAlreadyExistsException;
 import com.vivareal.gateways.PropertyGateway;
-import com.vivareal.gateways.ProvinceGateway;
 import com.vivareal.gateways.inmemory.PropertyGatewayImpl;
 import com.vivareal.gateways.inmemory.ProvinceGatewayImpl;
 import org.junit.Assert;
@@ -11,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.validation.Validation;
-import javax.validation.Validator;
 import java.util.Arrays;
 
 /**
@@ -19,26 +17,18 @@ import java.util.Arrays;
  */
 public class CreatePropertyTest {
 
-    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private PropertyGateway propertyGateway;
 
-    private final Spotippos spotippos = new Spotippos();
-
-    private final PropertyGateway propertyGateway = new PropertyGatewayImpl(spotippos);
-
-    private final ProvinceGateway provinceGateway = new ProvinceGatewayImpl(spotippos);
-
-    private final CreateProperty createProperty = new CreateProperty(propertyGateway, provinceGateway, validator);
+    private CreateProperty createProperty;
 
     @Before
     public void setup() {
-        spotippos.removeAllProvinces();
-        spotippos.removeAllProperties();
-
         final Province gode = createProvince("gode", new Point(0, 1000), new Point(600, 500));
         final Province ruja = createProvince("ruja", new Point(400, 1000), new Point(1100, 500));
+        final Spotippos spotippos = new Spotippos(Arrays.asList(gode, ruja));
 
-        spotippos.insertProvince(gode);
-        spotippos.insertProvince(ruja);
+        propertyGateway = new PropertyGatewayImpl(spotippos);
+        createProperty = new CreateProperty(propertyGateway, new ProvinceGatewayImpl(spotippos),  Validation.buildDefaultValidatorFactory().getValidator());
     }
 
     @Test

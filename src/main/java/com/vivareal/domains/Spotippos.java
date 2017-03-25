@@ -17,17 +17,17 @@ public class Spotippos {
 
     private final Map<String, Province> provinceMap = new HashMap<>();
 
+    public Spotippos(final Collection<Province> provinces) {
+        provinces.forEach(province -> {
+            provinceMap.put(province.getName(), province);
+        });
+    }
+
     public Property insertProperty(final Property property) {
         world[property.getY()][property.getX()] = property;
         propertyMap.put(property.getId(), property);
 
         return property;
-    }
-
-    public Province insertProvince(final Province province) {
-        provinceMap.put(province.getName(), province);
-
-        return province;
     }
 
     public Property findPropertiesByPoint(final Point point) {
@@ -53,10 +53,6 @@ public class Spotippos {
 
     public Collection<Province> findProvinceByPoint(final Point point) {
         return provinceMap.values().stream().filter(province -> province.containPoint(point)).collect(Collectors.toList());
-    }
-
-    public Collection<Province> findAllProvinces() {
-        return provinceMap.values();
     }
 
     public void removeAllProperties() {

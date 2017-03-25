@@ -10,10 +10,6 @@ import java.util.Collection;
  */
 public interface ProvinceGateway {
 
-    Collection<Province> save(Collection<Province> provinces);
-
-    Collection<Province> findAll();
-
     Collection<Province> findByPoint(Point point);
 
 }

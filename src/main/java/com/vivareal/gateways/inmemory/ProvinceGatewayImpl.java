@@ -23,20 +23,6 @@ public class ProvinceGatewayImpl implements ProvinceGateway {
     }
 
     @Override
-    public Collection<Province> save(final Collection<Province> provinces) {
-        provinces.forEach(province -> {
-            spotippos.insertProvince(province);
-        });
-
-        return provinces;
-    }
-
-    @Override
-    public Collection<Province> findAll() {
-        return spotippos.findAllProvinces();
-    }
-
-    @Override
     public Collection<Province> findByPoint(final Point point) {
         return spotippos.findProvinceByPoint(point);
     }

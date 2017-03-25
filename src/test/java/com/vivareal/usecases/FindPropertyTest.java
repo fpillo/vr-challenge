@@ -2,33 +2,27 @@ package com.vivareal.usecases;
 
 import com.vivareal.domains.*;
 import com.vivareal.exceptions.PropertyNotFoundException;
-import com.vivareal.gateways.PropertyGateway;
 import com.vivareal.gateways.inmemory.PropertyGatewayImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * Created by fpillo on 3/24/2017.
  */
 public class FindPropertyTest {
 
-    private final Spotippos spotippos = new Spotippos();
-
-    private PropertyGateway propertyGateway = new PropertyGatewayImpl(spotippos);
-
-    private final FindProperty findProperty = new FindProperty(propertyGateway);
+    private FindProperty findProperty;
 
     @Before
     public void setup() {
-        spotippos.removeAllProperties();
-        spotippos.removeAllProvinces();
-
         final Province gode = createProvince("gode", new Point(0, 1000), new Point(600, 500));
         final Province ruja = createProvince("ruja", new Point(400, 1000), new Point(1100, 500));
+
+        final Spotippos spotippos = new Spotippos(Arrays.asList(gode, ruja));
 
         final Property property1 = new Property();
         property1.setId("f4f37fcd-f67c-4c3a-8c55-391080283f92");
@@ -42,10 +36,10 @@ public class FindPropertyTest {
         property2.setY(500);
         property2.addProvince(gode.getName());
 
-        spotippos.insertProvince(gode);
-        spotippos.insertProvince(ruja);
         spotippos.insertProperty(property1);
         spotippos.insertProperty(property2);
+
+        findProperty = new FindProperty(new PropertyGatewayImpl(spotippos));
     }
 
     @Test
@@ -80,16 +74,6 @@ public class FindPropertyTest {
         final Collection<Property> result = findProperty.byBoundaries(boundaries);
 
         Assert.assertTrue(result.size() == 0);
-    }
-
-    private Property createPropertie(final String id, final Integer x, final Integer y, final Map<String, Property> idMap) {
-        final Property property = new Property();
-        property.setId(id);
-        property.setX(x);
-        property.setY(y);
-        idMap.put(property.getId(), property);
-
-        return property;
     }
 
     private Province createProvince(final String name, final Point upperLeft, final Point bottomRight) {
