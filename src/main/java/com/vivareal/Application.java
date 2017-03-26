@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.vivareal.domains.Boundaries;
 import com.vivareal.domains.Province;
 import com.vivareal.domains.Spotippos;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,9 @@ import java.util.Map;
 @SpringBootApplication
 public class Application {
 
+	@Value("${fileName}")
+	private String fileName;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -30,7 +34,7 @@ public class Application {
 
 	@Bean
 	public Spotippos spotippos(final ResourceLoader resourceLoader) throws Exception {
-		final String provinces = resourceLoader.load("provinces.json");
+		final String provinces = resourceLoader.load(fileName);
 		return new Spotippos(parseProvinces(provinces));
 	}
 
